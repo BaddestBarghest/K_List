@@ -43,7 +43,7 @@
   { "id": "roleplay-stranger", "name": "Stranger/first-meeting roleplay", "category": "roleplay", "description": "Playing out meeting for the first time.", "source": "builtin", "order": 2 },
   { "id": "roleplay-captive", "name": "Captor/captive roleplay", "category": "roleplay", "description": "A scene built around capture and/or interrogation.", "source": "builtin", "order": 3 },
   { "id": "roleplay-medical", "name": "Medical roleplay", "category": "roleplay", "description": "A doctor-and-patient or exam-room scenario.", "source": "builtin", "order": 4 },
-  { "id": "ageplay", "name": "Age play", "category": "roleplay", "description": "Playing out a different age dynamic.", "source": "builtin", "order": 5 },
+  { "id": "ageplay", "name": "Age play", "category": "roleplay", "description": "Adults playing out an age-gap dynamic.", "source": "builtin", "order": 5 },
   { "id": "costume-uniform", "name": "Costumes & uniforms", "category": "roleplay", "description": "Dressing the part to set the scene.", "source": "builtin", "order": 6 },
 
   { "id": "exhibitionism", "name": "Exhibitionism", "category": "exhibitionism", "description": "Being seen.", "source": "builtin", "order": 0 },
@@ -74,6 +74,7 @@
   { "id": "group", "name": "Group play", "category": "multiples", "description": "Sex involving multiple people.", "source": "builtin", "order": 1 },
   { "id": "voyeur-partner", "name": "Voyeurism", "category": "multiples", "description": "One partner watches the other.", "source": "builtin", "order": 2 },
   { "id": "shared-dominant", "name": "Sharing a dominant/submissive", "category": "multiples", "description": "Multiple submissives sharing one Dominant, or vice versa.", "source": "builtin", "order": 3 },
+  { "id": "cuckolding", "name": "Cuckolding", "category": "multiples", "description": "Arousal from a partner's consensual outside encounter.", "source": "builtin", "order": 4 },
 
   { "id": "anal-sex", "name": "Anal sex", "category": "anal", "description": "Anal sex, giving or receiving.", "source": "builtin", "order": 0 },
   { "id": "rimming", "name": "Rimming", "category": "anal", "description": "Oral stimulation of the anus.", "source": "builtin", "order": 1 },
@@ -129,6 +130,7 @@
 
   { "id": "cnc-general", "name": "Consensual non-consent", "category": "cnc", "description": "Pre-negotiated roleplay of non-consent.", "source": "builtin", "order": 0 },
   { "id": "somnophilia", "name": "Somnophilia", "category": "cnc", "description": "Roleplay of a sleeping or unaware partner.", "source": "builtin", "order": 1 },
+  { "id": "dub-con", "name": "Dubious consent", "category": "cnc", "description": "Roleplay where consent stays deliberately ambiguous.", "source": "builtin", "order": 2 },
 
   { "id": "gore", "name": "Gore", "category": "extreme", "description": "Graphic injury or violence as a fantasy element.", "source": "builtin", "order": 0 },
   { "id": "mutilation", "name": "Mutilation", "category": "extreme", "description": "Fantasy of the body being harmed or altered.", "source": "builtin", "order": 1 },
