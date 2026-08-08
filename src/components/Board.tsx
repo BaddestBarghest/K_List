@@ -49,7 +49,7 @@ export function Board({ editMode }: { editMode: boolean }) {
   );
 
   return (
-    <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
+    <div className="board-scroll-root" style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
       {lists.map((list) => {
         const listKinks = allKinks.filter((k) => state.assignments[k.id] === list.id);
         const byCategory = new Map<string, typeof listKinks>();
@@ -62,6 +62,7 @@ export function Board({ editMode }: { editMode: boolean }) {
         return (
           <div
             key={list.id}
+            className="board-column"
             style={{
               minWidth: 260,
               maxWidth: 300,
@@ -85,7 +86,7 @@ export function Board({ editMode }: { editMode: boolean }) {
                 {list.name} ({listKinks.length})
               </Title>
             </div>
-            <div style={{ overflowY: "auto", padding: 8 }}>
+            <div className="board-column-content" style={{ overflowY: "auto", padding: 8 }}>
               {listKinks.length === 0 ? (
                 <Empty description="Nothing sorted here yet" image={Empty.PRESENTED_IMAGE_SIMPLE} />
               ) : (

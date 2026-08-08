@@ -22,15 +22,45 @@ export function ExportImport({ boardRef }: { boardRef: React.RefObject<HTMLDivEl
   const busyRef = useRef(false);
 
   async function exportImage() {
-    if (!boardRef.current) return;
+    const root = boardRef.current;
+    if (!root) return;
+
+    // html-to-image only captures each element's clipped, visible box — anything hidden by
+    // horizontal (board-scroll-root) or vertical (board-column / board-column-content)
+    // overflow gets cut off. Temporarily expand everything to its full content size, capture,
+    // then restore the original inline styles.
+    const restore: Array<() => void> = [];
+    function unclip(el: HTMLElement, prop: "overflow" | "overflowX" | "overflowY", maxHeight?: boolean) {
+      const prevOverflow = el.style[prop];
+      const prevMaxHeight = maxHeight ? el.style.maxHeight : undefined;
+      el.style[prop] = "visible";
+      if (maxHeight) el.style.maxHeight = "none";
+      restore.push(() => {
+        el.style[prop] = prevOverflow;
+        if (maxHeight) el.style.maxHeight = prevMaxHeight ?? "";
+      });
+    }
+
+    unclip(root, "overflowX");
+    root.querySelectorAll<HTMLElement>(".board-column").forEach((el) => unclip(el, "overflow", true));
+    root.querySelectorAll<HTMLElement>(".board-column-content").forEach((el) => unclip(el, "overflowY"));
+
     try {
-      const dataUrl = await toPng(boardRef.current, { backgroundColor: state.theme.darkMode ? "#141414" : "#ffffff" });
+      // Let layout settle after the style changes before measuring/capturing.
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      const dataUrl = await toPng(root, {
+        backgroundColor: state.theme.darkMode ? "#141414" : "#ffffff",
+        width: root.scrollWidth,
+        height: root.scrollHeight,
+      });
       const a = document.createElement("a");
       a.href = dataUrl;
       a.download = "k-list-board.png";
       a.click();
     } catch {
       messageApi.error("Image export failed");
+    } finally {
+      restore.forEach((fn) => fn());
     }
   }
 
