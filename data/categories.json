@@ -16,7 +16,7 @@
   { "id": "vaginal", "name": "Vaginal", "source": "builtin", "order": 14 },
   { "id": "body-fluids", "name": "Body Fluids", "source": "builtin", "order": 15 },
   { "id": "body-mods", "name": "Body Modification", "source": "builtin", "order": 16 },
-  { "id": "edge-play", "name": "Edge Play", "source": "builtin", "order": 17 },
+  { "id": "edge-play", "name": "Risk Play", "source": "builtin", "order": 17 },
   { "id": "fantasy-size", "name": "Fantasy & Size Play", "source": "builtin", "order": 18 },
   { "id": "vore", "name": "Vore", "source": "builtin", "order": 19 },
   { "id": "pregnancy", "name": "Pregnancy & Breeding", "source": "builtin", "order": 20 },
