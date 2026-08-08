@@ -1,0 +1,15 @@
+[
+  { "id": "bondage", "name": "Bondage & Restraint" },
+  { "id": "power-exchange", "name": "Power Exchange & D/s" },
+  { "id": "impact", "name": "Impact Play" },
+  { "id": "sensation", "name": "Sensation Play" },
+  { "id": "sensory-deprivation", "name": "Sensory Deprivation" },
+  { "id": "roleplay", "name": "Roleplay & Fantasy" },
+  { "id": "exhibitionism", "name": "Exhibitionism & Voyeurism" },
+  { "id": "verbal-psych", "name": "Verbal & Psychological" },
+  { "id": "objects-fetish", "name": "Objects & Material Fetish" },
+  { "id": "body-worship", "name": "Body Worship & Body Play" },
+  { "id": "aftercare", "name": "Aftercare & Emotional" },
+  { "id": "multiples", "name": "Multiple Partners" },
+  { "id": "custom", "name": "Custom" }
+]
