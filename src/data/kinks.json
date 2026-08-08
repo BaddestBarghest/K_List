@@ -117,10 +117,10 @@
   { "id": "inflation", "name": "Inflation", "category": "size-play", "description": "Fantasy of the body swelling or filling.", "source": "builtin", "order": 1 },
   { "id": "transformation", "name": "Transformation", "category": "size-play", "description": "Fantasy of a body changing form.", "source": "builtin", "order": 2 },
   { "id": "growth", "name": "Growth", "category": "size-play", "description": "Fantasy of bodily growth.", "source": "builtin", "order": 3 },
+  { "id": "crushing", "name": "Crushing", "category": "size-play", "description": "Fantasy of being crushed or crushing.", "source": "builtin", "order": 4 },
 
   { "id": "vore", "name": "Vore", "category": "vore", "description": "Fantasy of being consumed, or consuming, whole.", "source": "builtin", "order": 0 },
   { "id": "soft-vore", "name": "Soft vore", "category": "vore", "description": "Vore with no harm to the one consumed.", "source": "builtin", "order": 1 },
-  { "id": "vore-role", "name": "Predator/prey preference", "category": "vore", "description": "Preferring the predator role, the prey role, or either.", "source": "builtin", "order": 2 },
   { "id": "hard-vore", "name": "Hard vore", "category": "vore", "description": "Vore including breaking bones, gore and other viscera.", "source": "builtin", "order": 3 },
   { "id": "digestion", "name": "Digestion", "category": "vore", "description": "Vore with a focus on digestion.", "source": "builtin", "order": 4 },
   { "id": "unbirth", "name": "Unbirth", "category": "vore", "description": "Vore with a focus on the vagina or uterus.", "source": "builtin", "order": 5 },

@@ -44,6 +44,7 @@ type Action =
   | { type: "DELETE_CUSTOM_KINK"; id: string }
   | { type: "REORDER_KINK"; id: string; direction: "up" | "down"; listId: string }
   | { type: "ASSIGN_KINK"; kinkId: string; listId: string | null }
+  | { type: "UNASSIGN_KINK"; kinkId: string }
   | { type: "ADD_LIST"; name: string; color: string }
   | { type: "UPDATE_LIST"; id: string; patch: Partial<Pick<ListDef, "name" | "color">> }
   | { type: "DELETE_LIST"; id: string }
@@ -107,6 +108,11 @@ function reducer(state: AppState, action: Action): AppState {
       return {
         ...state,
         assignments: { ...state.assignments, [action.kinkId]: action.listId },
+      };
+    case "UNASSIGN_KINK":
+      return {
+        ...state,
+        assignments: { ...state.assignments, [action.kinkId]: null },
       };
     case "ADD_LIST": {
       if (state.lists.length >= MAX_LISTS) return state;
