@@ -67,8 +67,8 @@ export const KinkItem = memo(
           alignItems: "center",
           justifyContent: "space-between",
           gap: 8,
-          padding: "6px 8px",
-          borderRadius: 6,
+          padding: "2px 8px",
+          borderRadius: 4,
           borderLeft: `3px solid ${assignedList ? assignedList.color : "transparent"}`,
           transition: "background-color 0.6s ease, border-color 0.3s ease",
           backgroundColor: highlighted

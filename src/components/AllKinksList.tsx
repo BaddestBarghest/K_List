@@ -100,7 +100,7 @@ export function AllKinksList({ editMode }: { editMode: boolean }) {
                 <CategoryHeader category={category} count={kinks.length} editMode={editMode} reorderable={false} />
               ),
               children: (
-                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                   {kinks.map((kink) => (
                     <KinkItem
                       key={kink.id}
