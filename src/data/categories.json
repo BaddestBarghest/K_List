@@ -11,5 +11,14 @@
   { "id": "body-worship", "name": "Body Worship & Body Play", "source": "builtin", "order": 9 },
   { "id": "aftercare", "name": "Aftercare & Emotional", "source": "builtin", "order": 10 },
   { "id": "multiples", "name": "Multiple Partners", "source": "builtin", "order": 11 },
-  { "id": "custom", "name": "Custom", "source": "builtin", "order": 12 }
+  { "id": "anal-oral", "name": "Anal & Oral", "source": "builtin", "order": 12 },
+  { "id": "vaginal", "name": "Vaginal", "source": "builtin", "order": 13 },
+  { "id": "body-fluids", "name": "Body Fluids", "source": "builtin", "order": 14 },
+  { "id": "body-mods", "name": "Body Modification", "source": "builtin", "order": 15 },
+  { "id": "edge-play", "name": "Edge Play", "source": "builtin", "order": 16 },
+  { "id": "fantasy-size", "name": "Fantasy & Size Play", "source": "builtin", "order": 17 },
+  { "id": "pregnancy", "name": "Pregnancy & Breeding", "source": "builtin", "order": 18 },
+  { "id": "cnc", "name": "Consensual Non-Consent", "source": "builtin", "order": 19 },
+  { "id": "extreme", "name": "Extreme", "source": "builtin", "order": 20 },
+  { "id": "custom", "name": "Custom", "source": "builtin", "order": 21 }
 ]
