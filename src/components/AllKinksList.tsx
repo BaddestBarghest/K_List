@@ -12,16 +12,14 @@ const { Title } = Typography;
 export function AllKinksList({ editMode }: { editMode: boolean }) {
   const { state, dispatch } = useAppStore();
   const rawCategories = useCategories();
-  // Always alphabetical here, independent of any per-list reorder-via-arrows on the Board —
-  // this section is for finding/assigning, not arranging, so it never reflects that ordering.
+  
+  // Always alphabetical
   const categories = useMemo(
     () => [...rawCategories].sort((a, b) => a.name.localeCompare(b.name)),
     [rawCategories],
   );
   const kinksByCategory = useKinksByCategory();
   const [query, setQuery] = useState("");
-  // Start collapsed: with ~90 kinks (each rendering a Select), expanding everything up front
-  // would mount all of them on first paint. Panels mount lazily as the user opens them.
   const [activeKeys, setActiveKeys] = useState<string[]>([]);
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const itemRefs = useRef(new Map<string, HTMLDivElement>());

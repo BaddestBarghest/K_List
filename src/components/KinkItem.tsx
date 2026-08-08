@@ -21,9 +21,6 @@ interface KinkItemProps {
   readOnly?: boolean;
 }
 
-// All callback props are expected to be stable (useCallback'd) references from the parent —
-// that, plus memo, is what lets a single dispatch re-render only the affected row(s) instead
-// of every kink row on the page.
 export const KinkItem = memo(
   forwardRef<HTMLDivElement, KinkItemProps>(function KinkItem(
     {
@@ -54,9 +51,7 @@ export const KinkItem = memo(
       [lists],
     );
 
-    // Only tint by assignment color in the assign-able (non-readOnly) context — i.e. the
-    // "All kinks" section — since inside a Board column the surrounding column color already
-    // makes the assignment obvious.
+    // Only tint by assignment color in the assign-able view 
     const assignedList = !readOnly && currentListId ? lists.find((l) => l.id === currentListId) : undefined;
 
     return (

@@ -24,11 +24,7 @@ export function ExportImport({ boardRef }: { boardRef: React.RefObject<HTMLDivEl
   async function exportImage() {
     const root = boardRef.current;
     if (!root) return;
-
-    // html-to-image only captures each element's clipped, visible box — anything hidden by
-    // horizontal (board-scroll-root) or vertical (board-column / board-column-content)
-    // overflow gets cut off. Temporarily expand everything to its full content size, capture,
-    // then restore the original inline styles.
+    
     const restore: Array<() => void> = [];
     function unclip(el: HTMLElement, prop: "overflow" | "overflowX" | "overflowY", maxHeight?: boolean) {
       const prevOverflow = el.style[prop];
