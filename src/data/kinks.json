@@ -98,19 +98,20 @@
   { "id": "watersports", "name": "Watersports", "category": "body-fluids", "description": "Piss, as part of the play.", "source": "builtin", "order": 0 },
   { "id": "cum-play", "name": "Cum play", "category": "body-fluids", "description": "Cum itself as the focus — taste, mess, sight of it.", "source": "builtin", "order": 1 },
   { "id": "lactation", "name": "Lactation", "category": "body-fluids", "description": "Breast milk, and nursing on it.", "source": "builtin", "order": 2 },
-  { "id": "sounding", "name": "Sounding", "category": "body-fluids", "description": "A smooth rod, inserted into the urethra.", "source": "builtin", "order": 3 },
-  { "id": "scat", "name": "Scat", "category": "body-fluids", "description": "Shit, as part of the play.", "source": "builtin", "order": 4 },
-  { "id": "saliva-play", "name": "Saliva play", "category": "body-fluids", "description": "Spit — trading it, drooling it, the mess of it.", "source": "builtin", "order": 5 },
+  { "id": "scat", "name": "Scat", "category": "body-fluids", "description": "Shit, as part of the play.", "source": "builtin", "order": 3 },
+  { "id": "saliva-play", "name": "Saliva play", "category": "body-fluids", "description": "Spit — trading it, drooling it, the mess of it.", "source": "builtin", "order": 4 },
 
   { "id": "piercing-play", "name": "Piercing play", "category": "body-mods", "description": "The look, glint, or tug of piercings.", "source": "builtin", "order": 0 },
   { "id": "marking", "name": "Marking", "category": "body-mods", "description": "Bites, hickeys, or marks left on skin.", "source": "builtin", "order": 1 },
   { "id": "branding", "name": "Branding", "category": "body-mods", "description": "Permanent marking by burning; extreme edge play.", "source": "builtin", "order": 2 },
   { "id": "tattoo-interest", "name": "Tattoos", "category": "body-mods", "description": "Ink on skin, worn or admired.", "source": "builtin", "order": 3 },
+  { "id": "womb-tattoo", "name": "Womb tattoo", "category": "body-mods", "description": "Tattoo on the belly or uterus.", "source": "builtin", "order": 4 },
 
   { "id": "breath-play", "name": "Breath play", "category": "edge-play", "description": "Controlling a partner's breathing.", "source": "builtin", "order": 0 },
   { "id": "choking", "name": "Choking", "category": "edge-play", "description": "A hand (or hands) around the throat.", "source": "builtin", "order": 1 },
   { "id": "blood-play", "name": "Blood play", "category": "edge-play", "description": "Play involving a small amount of blood.", "source": "builtin", "order": 2 },
   { "id": "knife-play", "name": "Knife play", "category": "edge-play", "description": "A blade used for sensation, not injury.", "source": "builtin", "order": 3 },
+  { "id": "sounding", "name": "Sounding", "category": "edge-play", "description": "A smooth rod, inserted into the urethra.", "source": "builtin", "order": 4 },
 
   { "id": "macro-micro", "name": "Macro/micro", "category": "fantasy-size", "description": "Fantasy involving giant or tiny partners.", "source": "builtin", "order": 0 },
   { "id": "inflation", "name": "Inflation", "category": "fantasy-size", "description": "Fantasy of the body swelling or filling.", "source": "builtin", "order": 1 },
@@ -127,15 +128,18 @@
   { "id": "breeding", "name": "Breeding", "category": "pregnancy", "description": "Sex framed around trying to conceive.", "source": "builtin", "order": 0 },
   { "id": "impregnation", "name": "Impregnation", "category": "pregnancy", "description": "Fantasy focus on impregnating a partner.", "source": "builtin", "order": 1 },
   { "id": "pregnancy-kink", "name": "Pregnancy", "category": "pregnancy", "description": "Interest in pregnancy itself.", "source": "builtin", "order": 2 },
+  { "id": "birthing", "name": "Birthing", "category": "pregnancy", "description": "Interest in the experience of giving birth.", "source": "builtin", "order": 3 },
 
   { "id": "cnc-general", "name": "Consensual non-consent", "category": "cnc", "description": "Pre-negotiated roleplay of non-consent.", "source": "builtin", "order": 0 },
   { "id": "somnophilia", "name": "Somnophilia", "category": "cnc", "description": "Roleplay of a sleeping or unaware partner.", "source": "builtin", "order": 1 },
+  { "id": "rape-play", "name": "Rape play", "category": "cnc", "description": "Roleplay of a non-consenting partner.", "source": "builtin", "order": 3 },
   { "id": "dub-con", "name": "Dubious consent", "category": "cnc", "description": "Roleplay where consent stays deliberately ambiguous.", "source": "builtin", "order": 2 },
+  { "id": "non-consent", "name": "Non-consent", "category": "cnc", "description": "Roleplay of a non-consenting partner.", "source": "builtin", "order": 4 },
 
   { "id": "gore", "name": "Gore", "category": "extreme", "description": "Graphic injury or violence as a fantasy element.", "source": "builtin", "order": 0 },
   { "id": "mutilation", "name": "Mutilation", "category": "extreme", "description": "Fantasy of the body being harmed or altered.", "source": "builtin", "order": 1 },
-  { "id": "death-fantasy", "name": "Death fantasy", "category": "extreme", "description": "Death as a fantasy element within a scene.", "source": "builtin", "order": 2 },
-  { "id": "cannibalism-fantasy", "name": "Cannibalism", "category": "extreme", "description": "Fantasy of being eaten, or eating a partner.", "source": "builtin", "order": 3 },
-  { "id": "castration-fantasy", "name": "Castration fantasy", "category": "extreme", "description": "Fantasy involving removal of genitals.", "source": "builtin", "order": 4 },
-  { "id": "impalement-fantasy", "name": "Impalement", "category": "extreme", "description": "Fantasy of being pierced through by an object.", "source": "builtin", "order": 5 }
+  { "id": "death", "name": "Death", "category": "extreme", "description": "Death.", "source": "builtin", "order": 2 },
+  { "id": "cannibalism", "name": "Cannibalism", "category": "extreme", "description": "Fantasy of being eaten, or eating a partner.", "source": "builtin", "order": 3 },
+  { "id": "castration", "name": "Castration fantasy", "category": "extreme", "description": "Fantasy involving removal of genitals.", "source": "builtin", "order": 4 },
+  { "id": "impalement", "name": "Impalement", "category": "extreme", "description": "Fantasy of being pierced through by an object.", "source": "builtin", "order": 5 }
 ]
