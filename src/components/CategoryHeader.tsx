@@ -8,10 +8,12 @@ export function CategoryHeader({
   category,
   count,
   editMode,
+  reorderable = true,
 }: {
   category: Category;
   count: number;
   editMode: boolean;
+  reorderable?: boolean;
 }) {
   const { dispatch } = useAppStore();
   const categories = useCategories();
@@ -21,7 +23,7 @@ export function CategoryHeader({
       <span>
         {category.name} ({count})
       </span>
-      {editMode && (
+      {editMode && reorderable && (
         <Space onClick={(e) => e.stopPropagation()}>
           <Button
             size="small"

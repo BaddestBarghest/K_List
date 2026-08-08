@@ -34,21 +34,22 @@ One page, top to bottom:
 
 ### 1. Unassigned section
 - Search bar (fuzzy) filters across name / category / description.
-- Categories rendered as collapsible dropdowns (Ant `Collapse`); only kinks with no list assignment are listed underneath.
+- Categories rendered as collapsible dropdowns (Ant `Collapse`); only kinks with no list assignment are listed underneath. Neither categories nor kinks are reorderable here, even in edit mode — this section is purely for finding and assigning, not arranging; display order simply follows the current global category/kink order set elsewhere (Board, or the Manage lists/categories panels).
 - Hovering a kink shows its description (Ant `Tooltip`).
-- Each kink has an assignment control: a scrollable dropdown (Ant `Select`) listing all current lists by name; selecting one assigns the kink to it (removing it from this section); "None" clears the assignment (returning it here). This dropdown's options are always alphabetical, independent of the lists' display order on the Board (see Edit mode below) — reordering is a display concern, not a selection concern.
+- Each kink has an assignment control: a scrollable dropdown (Ant `Select`) listing all current lists by name; selecting one assigns the kink to it (removing it from this section); "None" clears the assignment (returning it here). This dropdown's options are always alphabetical, independent of the lists' display order on the Board — reordering is a display concern, not a selection concern.
 
 ### 2. Board
 - One column per list (Favourite, Like, Okay, Dislike, + any custom lists), stacked horizontally in list order, each independently vertically scrollable.
 - Within each column, only kinks currently assigned to that list are shown, grouped by category as collapsible dropdowns — same hover-description behavior as the Unassigned section.
+- Every kink row on the Board has an X button, always visible (not gated by edit mode), that unassigns it (sets its list back to None), returning it to the Unassigned section. This is separate from deleting a custom kink outright, which stays edit-mode-only.
 
 ### 3. Edit mode (toggle, e.g. Ant `Switch` in the header)
 When on, additionally shows:
 - **Manage lists:** add a new list (name + color via Ant `ColorPicker`), remove a list, reorder lists (arrows) — the horizontal order of Board columns.
 - **Manage categories:** add a new category; rename/delete custom categories (delete blocked while any kink still uses it); reorder any category (builtin or custom) via arrows — a category's order is global, so reordering it in one place (Unassigned or any Board column) reorders it everywhere for consistency.
 - **Custom kinks:** add a kink to any category, builtin or custom, via a form with an alphabetically-sorted category picker (name + description); edit/remove custom kinks inline.
-- **Reorder kinks:** up/down arrow controls appear on every kink row, in both the Unassigned section and each Board column, to manually reorder kinks within their category. A kink's order is likewise global but only visibly matters within whichever subset (unassigned, or a given list's category) is currently displaying it, so reordering within one list's column doesn't disturb other lists or the Unassigned section.
-- **Remove custom kinks:** an X button on custom kinks (builtin kinks can only be unassigned, not removed).
+- **Reorder kinks:** up/down arrow controls appear on every kink row within each Board column (not in the Unassigned section — see above) to manually reorder kinks within their category. A kink's order is global but only visibly matters within whichever subset is currently displaying it, so reordering within one list's column doesn't disturb other lists or the Unassigned section.
+- **Remove custom kinks entirely:** an edit-mode-only trash button on custom kinks deletes them from the app (builtin kinks can't be deleted, only unassigned). Distinct from the always-visible unassign-X described under Board above.
 When off, all of the above controls are hidden; the app is browse/search/assign only.
 
 ## Data Model (draft)

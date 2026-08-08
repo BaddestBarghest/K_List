@@ -81,6 +81,9 @@ export function Board({ editMode }: { editMode: boolean }) {
                                   dispatch({ type: "UPDATE_KINK", id: kink.id, patch: { name, description } });
                                 }}
                                 onDelete={() => dispatch({ type: "DELETE_CUSTOM_KINK", id: kink.id })}
+                                onUnassign={() =>
+                                  dispatch({ type: "ASSIGN_KINK", kinkId: kink.id, listId: null })
+                                }
                                 onReorderUp={() =>
                                   dispatch({ type: "REORDER_KINK", id: kink.id, direction: "up", categoryKinks: kinks })
                                 }

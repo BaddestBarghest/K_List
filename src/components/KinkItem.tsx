@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { Button, Select, Space, Tooltip, Typography } from "antd";
-import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import type { Kink, ListDef } from "../types";
 
 const { Text } = Typography;
@@ -11,10 +11,12 @@ interface KinkItemProps {
   currentListId: string | null;
   onAssign?: (listId: string | null) => void;
   editMode?: boolean;
+  reorderable?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
   onReorderUp?: () => void;
   onReorderDown?: () => void;
+  onUnassign?: () => void;
   highlighted?: boolean;
   readOnly?: boolean;
 }
@@ -26,10 +28,12 @@ export const KinkItem = forwardRef<HTMLDivElement, KinkItemProps>(function KinkI
     currentListId,
     onAssign,
     editMode,
+    reorderable = true,
     onEdit,
     onDelete,
     onReorderUp,
     onReorderDown,
+    onUnassign,
     highlighted,
     readOnly,
   },
@@ -61,17 +65,22 @@ export const KinkItem = forwardRef<HTMLDivElement, KinkItemProps>(function KinkI
       </Tooltip>
 
       <Space size={4}>
-        {editMode && (
+        {editMode && reorderable && (
           <>
             <Button size="small" icon={<ArrowUpOutlined />} onClick={onReorderUp} />
             <Button size="small" icon={<ArrowDownOutlined />} onClick={onReorderDown} />
-            {kink.source === "custom" && (
-              <>
-                <Button size="small" icon={<EditOutlined />} onClick={onEdit} />
-                <Button size="small" danger icon={<CloseOutlined />} onClick={onDelete} />
-              </>
-            )}
           </>
+        )}
+        {editMode && kink.source === "custom" && (
+          <>
+            <Button size="small" icon={<EditOutlined />} onClick={onEdit} />
+            <Button size="small" danger icon={<DeleteOutlined />} onClick={onDelete} />
+          </>
+        )}
+        {onUnassign && (
+          <Tooltip title="Remove from this list">
+            <Button size="small" icon={<CloseOutlined />} onClick={onUnassign} />
+          </Tooltip>
         )}
         {!readOnly && (
           <Select

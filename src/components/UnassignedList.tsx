@@ -55,7 +55,9 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
             const kinks = (kinksByCategory.get(category.id) ?? []).slice().sort((a, b) => a.order - b.order);
             return {
               key: category.id,
-              label: <CategoryHeader category={category} count={kinks.length} editMode={editMode} />,
+              label: (
+                <CategoryHeader category={category} count={kinks.length} editMode={editMode} reorderable={false} />
+              ),
               children: (
                 <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {kinks.map((kink) => (
@@ -70,6 +72,7 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
                       currentListId={state.assignments[kink.id] ?? null}
                       onAssign={(listId) => dispatch({ type: "ASSIGN_KINK", kinkId: kink.id, listId })}
                       editMode={editMode}
+                      reorderable={false}
                       highlighted={highlightId === kink.id}
                       onEdit={() => {
                         const name = window.prompt("Kink name", kink.name);
@@ -78,12 +81,6 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
                         dispatch({ type: "UPDATE_KINK", id: kink.id, patch: { name, description } });
                       }}
                       onDelete={() => dispatch({ type: "DELETE_CUSTOM_KINK", id: kink.id })}
-                      onReorderUp={() =>
-                        dispatch({ type: "REORDER_KINK", id: kink.id, direction: "up", categoryKinks: kinks })
-                      }
-                      onReorderDown={() =>
-                        dispatch({ type: "REORDER_KINK", id: kink.id, direction: "down", categoryKinks: kinks })
-                      }
                     />
                   ))}
                 </div>
