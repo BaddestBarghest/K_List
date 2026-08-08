@@ -1,6 +1,6 @@
 [
-  { "id": "bondage", "name": "Bondage & Restraint", "source": "builtin", "order": 0 },
-  { "id": "power-exchange", "name": "Power Exchange & D/s", "source": "builtin", "order": 1 },
+  { "id": "bondage", "name": "BDSM", "source": "builtin", "order": 0 },
+  { "id": "power-exchange", "name": "Power Exchange", "source": "builtin", "order": 1 },
   { "id": "impact", "name": "Impact Play", "source": "builtin", "order": 2 },
   { "id": "sensation", "name": "Sensation Play", "source": "builtin", "order": 3 },
   { "id": "sensory-deprivation", "name": "Sensory Deprivation", "source": "builtin", "order": 4 },
@@ -17,7 +17,7 @@
   { "id": "body-fluids", "name": "Body Fluids", "source": "builtin", "order": 15 },
   { "id": "body-mods", "name": "Body Modification", "source": "builtin", "order": 16 },
   { "id": "edge-play", "name": "Risk Play", "source": "builtin", "order": 17 },
-  { "id": "fantasy-size", "name": "Fantasy & Size Play", "source": "builtin", "order": 18 },
+  { "id": "size-play", "name": "Size Play", "source": "builtin", "order": 18 },
   { "id": "vore", "name": "Vore", "source": "builtin", "order": 19 },
   { "id": "pregnancy", "name": "Pregnancy & Breeding", "source": "builtin", "order": 20 },
   { "id": "cnc", "name": "Consensual Non-Consent", "source": "builtin", "order": 21 },

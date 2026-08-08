@@ -54,6 +54,11 @@ export const KinkItem = memo(
       [lists],
     );
 
+    // Only tint by assignment color in the assign-able (non-readOnly) context — i.e. the
+    // "All kinks" section — since inside a Board column the surrounding column color already
+    // makes the assignment obvious.
+    const assignedList = !readOnly && currentListId ? lists.find((l) => l.id === currentListId) : undefined;
+
     return (
       <div
         ref={ref}
@@ -64,8 +69,13 @@ export const KinkItem = memo(
           gap: 8,
           padding: "6px 8px",
           borderRadius: 6,
-          transition: "background-color 0.6s ease",
-          backgroundColor: highlighted ? "rgba(235, 47, 150, 0.25)" : "transparent",
+          borderLeft: `3px solid ${assignedList ? assignedList.color : "transparent"}`,
+          transition: "background-color 0.6s ease, border-color 0.3s ease",
+          backgroundColor: highlighted
+            ? "rgba(235, 47, 150, 0.25)"
+            : assignedList
+              ? `${assignedList.color}22`
+              : "transparent",
         }}
       >
         <Tooltip title={kink.description || "No description"} placement="right">
