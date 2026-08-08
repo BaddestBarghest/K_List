@@ -31,7 +31,7 @@ export function AgeGate() {
           Leave
         </Button>
         <Button type="primary" onClick={() => dispatch({ type: "CONFIRM_AGE" })}>
-          I am 18 or older — Enter
+          I am 18+ & Enter
         </Button>
       </div>
     </Modal>

@@ -1,5 +1,6 @@
-import { Button, Input, Space, Typography } from "antd";
-import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import { Button, Input, Modal, Space, Typography } from "antd";
+import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { useAppStore } from "../store/AppStore";
 import { useCategories } from "../hooks/useKinks";
 
@@ -8,6 +9,26 @@ const { Title, Text } = Typography;
 export function CategoryManager() {
   const { dispatch } = useAppStore();
   const categories = useCategories();
+  const [addOpen, setAddOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+
+  function submitAdd() {
+    if (!newName.trim()) return;
+    dispatch({ type: "ADD_CATEGORY", name: newName.trim() });
+    setNewName("");
+    setAddOpen(false);
+  }
+
+  function confirmDelete(id: string, name: string) {
+    Modal.confirm({
+      title: `Delete category "${name}"?`,
+      icon: <ExclamationCircleOutlined />,
+      content: "It must have no kinks in it, or this will have no effect.",
+      okText: "Delete",
+      okButtonProps: { danger: true },
+      onOk: () => dispatch({ type: "DELETE_CATEGORY", id }),
+    });
+  }
 
   return (
     <div style={{ marginBottom: 16, padding: 12, border: "1px dashed #444", borderRadius: 8 }}>
@@ -41,26 +62,35 @@ export function CategoryManager() {
                 size="small"
                 danger
                 icon={<DeleteOutlined />}
-                onClick={() => {
-                  if (!window.confirm(`Delete category "${category.name}"? It must have no kinks in it.`)) return;
-                  dispatch({ type: "DELETE_CATEGORY", id: category.id });
-                }}
+                onClick={() => confirmDelete(category.id, category.name)}
               />
             )}
           </Space>
         ))}
       </div>
-      <Button
-        style={{ marginTop: 12 }}
-        icon={<PlusOutlined />}
-        onClick={() => {
-          const name = window.prompt("New category name");
-          if (!name) return;
-          dispatch({ type: "ADD_CATEGORY", name });
-        }}
-      >
+      <Button style={{ marginTop: 12 }} icon={<PlusOutlined />} onClick={() => setAddOpen(true)}>
         Add category
       </Button>
+
+      <Modal
+        title="Add category"
+        open={addOpen}
+        onOk={submitAdd}
+        onCancel={() => {
+          setAddOpen(false);
+          setNewName("");
+        }}
+        okButtonProps={{ disabled: !newName.trim() }}
+        destroyOnHidden
+      >
+        <Input
+          placeholder="Category name"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onPressEnter={submitAdd}
+          autoFocus
+        />
+      </Modal>
     </div>
   );
 }

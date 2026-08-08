@@ -1,4 +1,5 @@
-import { Button, ColorPicker, Input, Space, Typography } from "antd";
+import { useState } from "react";
+import { Button, ColorPicker, Input, Modal, Space, Typography } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { useAppStore } from "../store/AppStore";
 import { MAX_LISTS } from "../types";
@@ -9,6 +10,15 @@ export function ListManager() {
   const { state, dispatch } = useAppStore();
   const lists = [...state.lists].sort((a, b) => a.order - b.order);
   const atCap = state.lists.length >= MAX_LISTS;
+  const [addOpen, setAddOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+
+  function submitAdd() {
+    if (!newName.trim()) return;
+    dispatch({ type: "ADD_LIST", name: newName.trim(), color: "#1677ff" });
+    setNewName("");
+    setAddOpen(false);
+  }
 
   return (
     <div style={{ marginBottom: 16, padding: 12, border: "1px dashed #444", borderRadius: 8 }}>
@@ -52,14 +62,30 @@ export function ListManager() {
         style={{ marginTop: 12 }}
         icon={<PlusOutlined />}
         disabled={atCap}
-        onClick={() => {
-          const name = window.prompt("New list name");
-          if (!name) return;
-          dispatch({ type: "ADD_LIST", name, color: "#1677ff" });
-        }}
+        onClick={() => setAddOpen(true)}
       >
         Add list
       </Button>
+
+      <Modal
+        title="Add list"
+        open={addOpen}
+        onOk={submitAdd}
+        onCancel={() => {
+          setAddOpen(false);
+          setNewName("");
+        }}
+        okButtonProps={{ disabled: !newName.trim() }}
+        destroyOnHidden
+      >
+        <Input
+          placeholder="List name"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onPressEnter={submitAdd}
+          autoFocus
+        />
+      </Modal>
     </div>
   );
 }
