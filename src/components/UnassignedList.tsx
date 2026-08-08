@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { AutoComplete, Collapse, Input, Typography } from "antd";
+import { AutoComplete, Button, Collapse, Input, Space, Typography } from "antd";
 import { useAppStore } from "../store/AppStore";
 import { useCategories, useUnassignedKinksByCategory } from "../hooks/useKinks";
 import { fuzzySearch } from "../utils/search";
@@ -11,7 +11,13 @@ const { Title } = Typography;
 
 export function UnassignedList({ editMode }: { editMode: boolean }) {
   const { state, dispatch } = useAppStore();
-  const categories = useCategories();
+  const rawCategories = useCategories();
+  // Always alphabetical here, independent of any per-list reorder-via-arrows on the Board —
+  // this section is for finding/assigning, not arranging, so it never reflects that ordering.
+  const categories = useMemo(
+    () => [...rawCategories].sort((a, b) => a.name.localeCompare(b.name)),
+    [rawCategories],
+  );
   const kinksByCategory = useUnassignedKinksByCategory();
   const [query, setQuery] = useState("");
   const [activeKeys, setActiveKeys] = useState<string[]>(categories.map((c) => c.id));
@@ -20,6 +26,10 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
 
   const allUnassigned = useMemo(() => [...kinksByCategory.values()].flat(), [kinksByCategory]);
   const searchResults = useMemo(() => fuzzySearch(query, allUnassigned), [query, allUnassigned]);
+  const visibleCategoryIds = useMemo(
+    () => categories.filter((c) => (kinksByCategory.get(c.id)?.length ?? 0) > 0).map((c) => c.id),
+    [categories, kinksByCategory],
+  );
 
   function goToKink(kink: Kink) {
     setActiveKeys((keys) => (keys.includes(kink.category) ? keys : [...keys, kink.category]));
@@ -46,13 +56,24 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
         <Input.Search placeholder="Search kinks..." allowClear />
       </AutoComplete>
 
+      <Space style={{ marginBottom: 8 }}>
+        <Button size="small" onClick={() => setActiveKeys(visibleCategoryIds)}>
+          Expand all
+        </Button>
+        <Button size="small" onClick={() => setActiveKeys([])}>
+          Collapse all
+        </Button>
+      </Space>
+
       <Collapse
         activeKey={activeKeys}
         onChange={(keys) => setActiveKeys(keys as string[])}
         items={categories
           .filter((c) => (kinksByCategory.get(c.id)?.length ?? 0) > 0)
           .map((category) => {
-            const kinks = (kinksByCategory.get(category.id) ?? []).slice().sort((a, b) => a.order - b.order);
+            const kinks = (kinksByCategory.get(category.id) ?? [])
+              .slice()
+              .sort((a, b) => a.name.localeCompare(b.name));
             return {
               key: category.id,
               label: (

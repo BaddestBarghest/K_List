@@ -34,7 +34,7 @@ function AppShell() {
         <Title level={3} style={{ margin: 0, color: "#fff" }}>
           K_List
         </Title>
-        <Space wrap>
+        <Space align="center" wrap>
           <span style={{ color: "#fff" }}>Edit mode</span>
           <Switch checked={editMode} onChange={setEditMode} />
           <span style={{ color: "#fff" }}>Accent</span>

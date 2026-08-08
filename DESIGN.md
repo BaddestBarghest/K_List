@@ -34,7 +34,7 @@ One page, top to bottom:
 
 ### 1. Unassigned section
 - Search bar (fuzzy) filters across name / category / description.
-- Categories rendered as collapsible dropdowns (Ant `Collapse`); only kinks with no list assignment are listed underneath. Neither categories nor kinks are reorderable here, even in edit mode — this section is purely for finding and assigning, not arranging; display order simply follows the current global category/kink order set elsewhere (Board, or the Manage lists/categories panels).
+- Categories rendered as collapsible dropdowns (Ant `Collapse`); only kinks with no list assignment are listed underneath. Both categories and kinks here are always sorted alphabetically by name and are never reorderable, even in edit mode — this section is purely for finding and assigning, not arranging, and its display order is entirely independent of whatever order a category/kink has been reordered to within any Board list column.
 - Hovering a kink shows its description (Ant `Tooltip`).
 - Each kink has an assignment control: a scrollable dropdown (Ant `Select`) listing all current lists by name; selecting one assigns the kink to it (removing it from this section); "None" clears the assignment (returning it here). This dropdown's options are always alphabetical, independent of the lists' display order on the Board — reordering is a display concern, not a selection concern.
 
