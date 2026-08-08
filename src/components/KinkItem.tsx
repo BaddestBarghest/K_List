@@ -77,7 +77,7 @@ export const KinkItem = forwardRef<HTMLDivElement, KinkItemProps>(function KinkI
             <Button size="small" danger icon={<DeleteOutlined />} onClick={onDelete} />
           </>
         )}
-        {onUnassign && (
+        {editMode && onUnassign && (
           <Tooltip title="Remove from this list">
             <Button size="small" icon={<CloseOutlined />} onClick={onUnassign} />
           </Tooltip>

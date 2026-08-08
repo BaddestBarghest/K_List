@@ -29,16 +29,6 @@ export function useKinksByCategory(): Map<string, Kink[]> {
   return useMemo(() => groupByCategory(kinks), [kinks]);
 }
 
-// Kinks not currently assigned to any list — the pool shown in the Unassigned section.
-export function useUnassignedKinksByCategory(): Map<string, Kink[]> {
-  const { state } = useAppStore();
-  const kinks = useAllKinks();
-  return useMemo(
-    () => groupByCategory(kinks.filter((k) => !state.assignments[k.id])),
-    [kinks, state.assignments],
-  );
-}
-
 export function useCategories(): Category[] {
   const { state } = useAppStore();
   return useMemo(() => {

@@ -1,14 +1,14 @@
 # K_List — Design Document
 
 ## Overview
-A public, static kink-sorting app, all on one page. Every kink belongs to a category and can be assigned by the user to one of several personal lists (Favourite, Like, Okay, Dislike, plus any custom lists). An **Unassigned** section (search + category dropdowns) sits above the **Board** — one horizontally-stacked, vertically-scrollable column per list, showing only what's been assigned to it, grouped by category. There is no separate "master list" view; unassigned kinks simply aren't shown on the Board. Everything is client-side — no accounts, no backend — built with React + Ant Design, hosted on GitHub Pages.
+A public, static kink-sorting app, all on one page. Every kink belongs to a category and can be assigned by the user to one of several personal lists (Favourite, Like, Okay, Dislike, plus any custom lists). An **All kinks** section (search + category dropdowns, every kink always visible regardless of assignment) sits above the **Board** — one horizontally-stacked, vertically-scrollable column per list, showing only what's been assigned to it, grouped by category. There is no separate "master list" view; assigning a kink doesn't remove it from the All kinks section, it just updates that kink's dropdown to show its current list. Everything is client-side — no accounts, no backend — built with React + Ant Design, hosted on GitHub Pages.
 
 ## Goals
 - Public, browsable, categorized list of kinks — no login required.
-- Fast client-side fuzzy search over the Unassigned section.
-- Per-kink assignment to a user list (Favourite/Like/Okay/Dislike/custom) via a scrollable dropdown in the Unassigned section; "None" = unassigned (kink has no list, so it doesn't appear on the Board).
-- Board: one vertical, scrollable column per list, stacked horizontally, each showing only the kinks assigned to it, grouped by category (collapsible dropdowns), same hover-description behavior as the Unassigned section.
-- Edit mode (toggle): add/remove/reorder/recolor lists; create/rename/delete/reorder categories; add custom kinks to any category (builtin or custom); manually reorder kinks via arrows — both in the Unassigned section and within each Board column. All edit-only controls hidden when edit mode is off.
+- Fast client-side fuzzy search over the All kinks section.
+- Per-kink assignment to a user list (Favourite/Like/Okay/Dislike/custom) via a scrollable dropdown in the All kinks section; "None" = unassigned (kink has no list, so it doesn't appear on the Board — but it stays visible in All kinks either way).
+- Board: one vertical, scrollable column per list, stacked horizontally, each showing only the kinks assigned to it, grouped by category (collapsible dropdowns), same hover-description behavior as the All kinks section.
+- Edit mode (toggle): add/remove/reorder/recolor lists; create/rename/delete/reorder categories; add custom kinks to any category (builtin or custom); manually reorder kinks via arrows within each Board column. All edit-only controls hidden when edit mode is off.
 - Export the board as an image; export the save data as an encrypted `.json`. Import that file back in.
 - Dark mode, with a user-adjustable accent color.
 - Ant Design component library throughout.
@@ -32,24 +32,25 @@ A public, static kink-sorting app, all on one page. Every kink belongs to a cate
 
 One page, top to bottom:
 
-### 1. Unassigned section
+### 1. All kinks section
 - Search bar (fuzzy) filters across name / category / description.
-- Categories rendered as collapsible dropdowns (Ant `Collapse`); only kinks with no list assignment are listed underneath. Both categories and kinks here are always sorted alphabetically by name and are never reorderable, even in edit mode — this section is purely for finding and assigning, not arranging, and its display order is entirely independent of whatever order a category/kink has been reordered to within any Board list column.
+- Categories rendered as collapsible dropdowns (Ant `Collapse`); every kink is listed underneath its category regardless of assignment status. Both categories and kinks here are always sorted alphabetically by name and are never reorderable, even in edit mode — this section is purely for finding and assigning, not arranging, and its display order is entirely independent of whatever order a category/kink has been reordered to within any Board list column.
 - Hovering a kink shows its description (Ant `Tooltip`).
-- Each kink has an assignment control: a scrollable dropdown (Ant `Select`) listing all current lists by name; selecting one assigns the kink to it (removing it from this section); "None" clears the assignment (returning it here). This dropdown's options are always alphabetical, independent of the lists' display order on the Board — reordering is a display concern, not a selection concern.
+- Each kink has an assignment control: a scrollable dropdown (Ant `Select`) listing all current lists by name, plus "None"; it always reflects the kink's current assignment and changing it re-assigns immediately. Assigning or unassigning a kink never adds or removes it from this section — it's a permanent, complete listing of every kink. This dropdown's options are always alphabetical, independent of the lists' display order on the Board — reordering is a display concern, not a selection concern.
 
 ### 2. Board
 - One column per list (Favourite, Like, Okay, Dislike, + any custom lists), stacked horizontally in list order, each independently vertically scrollable.
-- Within each column, only kinks currently assigned to that list are shown, grouped by category as collapsible dropdowns — same hover-description behavior as the Unassigned section.
-- Every kink row on the Board has an X button, always visible (not gated by edit mode), that unassigns it (sets its list back to None), returning it to the Unassigned section. This is separate from deleting a custom kink outright, which stays edit-mode-only.
+- Within each column, only kinks currently assigned to that list are shown, grouped by category as collapsible dropdowns — same hover-description behavior as the All kinks section.
+- In edit mode, every kink row on the Board also gets an X button that unassigns it (sets its list back to None); its dropdown in the All kinks section immediately reflects "None" again. This is separate from deleting a custom kink outright, which is a different edit-mode-only control (trash icon).
 
 ### 3. Edit mode (toggle, e.g. Ant `Switch` in the header)
 When on, additionally shows:
 - **Manage lists:** add a new list (name + color via Ant `ColorPicker`), remove a list, reorder lists (arrows) — the horizontal order of Board columns.
-- **Manage categories:** add a new category; rename/delete custom categories (delete blocked while any kink still uses it); reorder any category (builtin or custom) via arrows — a category's order is global, so reordering it in one place (Unassigned or any Board column) reorders it everywhere for consistency.
+- **Manage categories:** add a new category; rename/delete custom categories (delete blocked while any kink still uses it); reorder any category (builtin or custom) via arrows — a category's order is global, so reordering it in one place (any Board column) reorders it in every other Board column too, but never in the All kinks section (see above).
 - **Custom kinks:** add a kink to any category, builtin or custom, via a form with an alphabetically-sorted category picker (name + description); edit/remove custom kinks inline.
-- **Reorder kinks:** up/down arrow controls appear on every kink row within each Board column (not in the Unassigned section — see above) to manually reorder kinks within their category. A kink's order is global but only visibly matters within whichever subset is currently displaying it, so reordering within one list's column doesn't disturb other lists or the Unassigned section.
-- **Remove custom kinks entirely:** an edit-mode-only trash button on custom kinks deletes them from the app (builtin kinks can't be deleted, only unassigned). Distinct from the always-visible unassign-X described under Board above.
+- **Reorder kinks:** up/down arrow controls appear on every kink row within each Board column (not in the All kinks section — see above) to manually reorder kinks within their category. A kink's order is global but only visibly matters within whichever subset is currently displaying it, so reordering within one list's column doesn't disturb other lists.
+- **Unassign (X):** edit-mode-only button on every Board kink row, sets it back to None.
+- **Remove custom kinks entirely:** an edit-mode-only trash button on custom kinks deletes them from the app (builtin kinks can't be deleted, only unassigned).
 When off, all of the above controls are hidden; the app is browse/search/assign only.
 
 ## Data Model (draft)

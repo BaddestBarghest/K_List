@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { ColorPicker, ConfigProvider, Layout, Space, Switch, Typography, theme as antTheme } from "antd";
 import { useAppStore } from "./store/AppStore";
 import { AgeGate } from "./components/AgeGate";
-import { UnassignedList } from "./components/UnassignedList";
+import { AllKinksList } from "./components/AllKinksList";
 import { Board } from "./components/Board";
 import { ListManager } from "./components/ListManager";
 import { CategoryManager } from "./components/CategoryManager";
@@ -39,6 +39,7 @@ function AppShell() {
           <Switch checked={editMode} onChange={setEditMode} />
           <span style={{ color: "#fff" }}>Accent</span>
           <ColorPicker
+            size="small"
             value={state.theme.accentColor}
             onChangeComplete={(color) => dispatch({ type: "SET_THEME", patch: { accentColor: color.toHexString() } })}
           />
@@ -60,7 +61,7 @@ function AppShell() {
             <AddKinkForm />
           </>
         )}
-        <UnassignedList editMode={editMode} />
+        <AllKinksList editMode={editMode} />
         <Title level={4}>Lists</Title>
         <div ref={boardRef}>
           <Board editMode={editMode} />

@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { AutoComplete, Button, Collapse, Input, Space, Typography } from "antd";
 import { useAppStore } from "../store/AppStore";
-import { useCategories, useUnassignedKinksByCategory } from "../hooks/useKinks";
+import { useCategories, useKinksByCategory } from "../hooks/useKinks";
 import { fuzzySearch } from "../utils/search";
 import { KinkItem } from "./KinkItem";
 import { CategoryHeader } from "./CategoryHeader";
@@ -9,7 +9,7 @@ import type { Kink } from "../types";
 
 const { Title } = Typography;
 
-export function UnassignedList({ editMode }: { editMode: boolean }) {
+export function AllKinksList({ editMode }: { editMode: boolean }) {
   const { state, dispatch } = useAppStore();
   const rawCategories = useCategories();
   // Always alphabetical here, independent of any per-list reorder-via-arrows on the Board —
@@ -18,14 +18,14 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
     () => [...rawCategories].sort((a, b) => a.name.localeCompare(b.name)),
     [rawCategories],
   );
-  const kinksByCategory = useUnassignedKinksByCategory();
+  const kinksByCategory = useKinksByCategory();
   const [query, setQuery] = useState("");
   const [activeKeys, setActiveKeys] = useState<string[]>(categories.map((c) => c.id));
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const itemRefs = useRef(new Map<string, HTMLDivElement>());
 
-  const allUnassigned = useMemo(() => [...kinksByCategory.values()].flat(), [kinksByCategory]);
-  const searchResults = useMemo(() => fuzzySearch(query, allUnassigned), [query, allUnassigned]);
+  const allKinks = useMemo(() => [...kinksByCategory.values()].flat(), [kinksByCategory]);
+  const searchResults = useMemo(() => fuzzySearch(query, allKinks), [query, allKinks]);
   const visibleCategoryIds = useMemo(
     () => categories.filter((c) => (kinksByCategory.get(c.id)?.length ?? 0) > 0).map((c) => c.id),
     [categories, kinksByCategory],
@@ -44,7 +44,7 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
 
   return (
     <div style={{ marginBottom: 24 }}>
-      <Title level={4}>Unassigned kinks</Title>
+      <Title level={4}>All kinks</Title>
       <AutoComplete
         style={{ width: "100%", marginBottom: 16 }}
         value={query}
