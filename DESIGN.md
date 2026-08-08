@@ -21,7 +21,10 @@ A public, static kink-sorting app, all on one page. Every kink belongs to a cate
 
 ## Tech Stack
 - **Framework:** React (via Vite).
-- **UI library:** Ant Design (antd v5) — `ConfigProvider` with `theme.darkAlgorithm` for dark mode and a runtime-configurable `colorPrimary` token for the accent color.
+- **UI library:** Ant Design (antd v6) — `ConfigProvider` with `theme.darkAlgorithm`/`defaultAlgorithm` for dark/light mode. Theming is done entirely through antd's design-token system (`token`/`components` on `ConfigProvider` in `App.tsx`), not a hand-written CSS file — `index.css` is intentionally just a minimal reset, since raw CSS would fight with antd's generated component styles rather than drive them.
+  - Dark palette: `colorBgLayout` `#1a1a1a`, `colorBgContainer`/`colorBgElevated` `#2a2a2a`, plus the user's chosen accent as `colorPrimary` (default `#f02d3a`).
+  - Light palette: `colorBgLayout` `#fffcf2`, `colorBgContainer`/`colorBgElevated` `#ccc5b9`, same accent token.
+- **Performance:** `KinkItem` and `CategoryHeader` are `React.memo`'d, and all their callback props are stabilized (`useCallback`, keyed off the stable `dispatch` from `useReducer`) in their parent components (`AllKinksList`, `Board`) so that an unrelated state change (theme toggle, one assignment, one edit) only re-renders the row(s) actually affected instead of every kink row on the page. `REORDER_KINK`/`REORDER_CATEGORY` compute their target subset inside the reducer (from `listId`/the kink's own category) rather than requiring the caller to pass a precomputed array, which is what makes a single top-level stable callback possible. The "All kinks" section also starts fully collapsed so its ~90 `Select`-per-row components mount lazily as categories are opened, rather than all at once on first paint.
 - **Hosting:** GitHub Pages, built via GitHub Actions on push to `main`.
 - **State/persistence:** `localStorage` — no backend, no database.
 - **Data source:** Builtin kink list shipped as static JSON/TS data bundled into the app; user's custom kinks and list assignments layered on top in `localStorage`.

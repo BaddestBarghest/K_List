@@ -16,6 +16,7 @@ function AppShell() {
   const { state, dispatch } = useAppStore();
   const [editMode, setEditMode] = useState(false);
   const boardRef = useRef<HTMLDivElement>(null);
+  const headerTextColor = state.theme.darkMode ? "#fff" : undefined;
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -31,19 +32,19 @@ function AppShell() {
           padding: "12px 24px",
         }}
       >
-        <Title level={3} style={{ margin: 0, color: "#fff" }}>
-          K_List
+        <Title level={3} style={{ margin: 0, color: headerTextColor }}>
+          K-List
         </Title>
         <Space align="center" wrap>
-          <span style={{ color: "#fff" }}>Edit mode</span>
+          <span style={{ color: headerTextColor }}>Edit mode</span>
           <Switch checked={editMode} onChange={setEditMode} />
-          <span style={{ color: "#fff" }}>Accent</span>
+          <span style={{ color: headerTextColor }}>Accent</span>
           <ColorPicker
             size="small"
             value={state.theme.accentColor}
             onChangeComplete={(color) => dispatch({ type: "SET_THEME", patch: { accentColor: color.toHexString() } })}
           />
-          <span style={{ color: "#fff" }}>Dark mode</span>
+          <span style={{ color: headerTextColor }}>Dark mode</span>
           <Switch
             checked={state.theme.darkMode}
             onChange={(darkMode) => dispatch({ type: "SET_THEME", patch: { darkMode } })}
@@ -73,11 +74,29 @@ function AppShell() {
 
 export default function App() {
   const { state } = useAppStore();
+  const { darkMode, accentColor } = state.theme;
   return (
     <ConfigProvider
       theme={{
-        algorithm: state.theme.darkMode ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
-        token: { colorPrimary: state.theme.accentColor },
+        algorithm: darkMode ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
+        token: darkMode
+          ? {
+              colorPrimary: accentColor,
+              colorBgLayout: "#1a1a1a",
+              colorBgContainer: "#2a2a2a",
+              colorBgElevated: "#2a2a2a",
+            }
+          : {
+              colorPrimary: accentColor,
+              colorBgLayout: "#fffcf2",
+              colorBgContainer: "#ccc5b9",
+              colorBgElevated: "#ccc5b9",
+            },
+        components: {
+          Layout: darkMode
+            ? { headerBg: "#1a1a1a", bodyBg: "#1a1a1a" }
+            : { headerBg: "#fffcf2", bodyBg: "#fffcf2" },
+        },
       }}
     >
       <AppShell />

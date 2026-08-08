@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useReducer, type ReactNo
 import { v4 as uuid } from "uuid";
 import type { AppState, Category, Kink, ListDef } from "../types";
 import { MAX_LISTS } from "../types";
-import { builtinKinks } from "../data";
+import { builtinCategories, builtinKinks } from "../data";
 
 const STORAGE_KEY = "klist:v1";
 
@@ -20,7 +20,7 @@ function defaultState(): AppState {
     customCategories: [],
     lists: DEFAULT_LISTS,
     assignments: {},
-    theme: { darkMode: true, accentColor: "#eb2f96" },
+    theme: { darkMode: true, accentColor: "#f02d3a" },
     ageConfirmed: false,
     orderOverrides: {},
     categoryOrderOverrides: {},
@@ -42,7 +42,7 @@ type Action =
   | { type: "ADD_CUSTOM_KINK"; name: string; category: string; description?: string }
   | { type: "UPDATE_KINK"; id: string; patch: Partial<Pick<Kink, "name" | "description" | "category">> }
   | { type: "DELETE_CUSTOM_KINK"; id: string }
-  | { type: "REORDER_KINK"; id: string; direction: "up" | "down"; categoryKinks: Kink[] }
+  | { type: "REORDER_KINK"; id: string; direction: "up" | "down"; listId: string }
   | { type: "ASSIGN_KINK"; kinkId: string; listId: string | null }
   | { type: "ADD_LIST"; name: string; color: string }
   | { type: "UPDATE_LIST"; id: string; patch: Partial<Pick<ListDef, "name" | "color">> }
@@ -51,7 +51,7 @@ type Action =
   | { type: "ADD_CATEGORY"; name: string }
   | { type: "RENAME_CATEGORY"; id: string; name: string }
   | { type: "DELETE_CATEGORY"; id: string }
-  | { type: "REORDER_CATEGORY"; id: string; direction: "up" | "down"; categories: Category[] }
+  | { type: "REORDER_CATEGORY"; id: string; direction: "up" | "down" }
   | { type: "SET_THEME"; patch: Partial<AppState["theme"]> }
   | { type: "CONFIRM_AGE" }
   | { type: "REPLACE_STATE"; state: AppState };
@@ -86,12 +86,18 @@ function reducer(state: AppState, action: Action): AppState {
       };
     }
     case "REORDER_KINK": {
-      const sorted = [...action.categoryKinks].sort((a, b) => a.order - b.order);
-      const idx = sorted.findIndex((k) => k.id === action.id);
+      const allKinksNow = [...builtinKinks, ...state.customKinks];
+      const target = allKinksNow.find((k) => k.id === action.id);
+      if (!target) return state;
+      const subset = allKinksNow
+        .filter((k) => k.category === target.category && state.assignments[k.id] === action.listId)
+        .map((k) => ({ ...k, order: state.orderOverrides[k.id] ?? k.order }))
+        .sort((a, b) => a.order - b.order);
+      const idx = subset.findIndex((k) => k.id === action.id);
       const swapWith = action.direction === "up" ? idx - 1 : idx + 1;
-      if (idx < 0 || swapWith < 0 || swapWith >= sorted.length) return state;
-      const a = sorted[idx];
-      const b = sorted[swapWith];
+      if (idx < 0 || swapWith < 0 || swapWith >= subset.length) return state;
+      const a = subset[idx];
+      const b = subset[swapWith];
       return {
         ...state,
         orderOverrides: { ...state.orderOverrides, [a.id]: b.order, [b.id]: a.order },
@@ -157,7 +163,11 @@ function reducer(state: AppState, action: Action): AppState {
       return { ...state, customCategories: state.customCategories.filter((c) => c.id !== action.id) };
     }
     case "REORDER_CATEGORY": {
-      const sorted = [...action.categories].sort((a, b) => a.order - b.order);
+      const allCategoriesNow = [...builtinCategories, ...state.customCategories].map((c) => ({
+        ...c,
+        order: state.categoryOrderOverrides[c.id] ?? c.order,
+      }));
+      const sorted = allCategoriesNow.sort((a, b) => a.order - b.order);
       const idx = sorted.findIndex((c) => c.id === action.id);
       const swapWith = action.direction === "up" ? idx - 1 : idx + 1;
       if (idx < 0 || swapWith < 0 || swapWith >= sorted.length) return state;

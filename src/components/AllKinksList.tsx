@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { AutoComplete, Button, Collapse, Input, Space, Typography } from "antd";
 import { useAppStore } from "../store/AppStore";
 import { useCategories, useKinksByCategory } from "../hooks/useKinks";
@@ -20,7 +20,9 @@ export function AllKinksList({ editMode }: { editMode: boolean }) {
   );
   const kinksByCategory = useKinksByCategory();
   const [query, setQuery] = useState("");
-  const [activeKeys, setActiveKeys] = useState<string[]>(categories.map((c) => c.id));
+  // Start collapsed: with ~90 kinks (each rendering a Select), expanding everything up front
+  // would mount all of them on first paint. Panels mount lazily as the user opens them.
+  const [activeKeys, setActiveKeys] = useState<string[]>([]);
   const [highlightId, setHighlightId] = useState<string | null>(null);
   const itemRefs = useRef(new Map<string, HTMLDivElement>());
 
@@ -29,6 +31,24 @@ export function AllKinksList({ editMode }: { editMode: boolean }) {
   const visibleCategoryIds = useMemo(
     () => categories.filter((c) => (kinksByCategory.get(c.id)?.length ?? 0) > 0).map((c) => c.id),
     [categories, kinksByCategory],
+  );
+
+  const handleAssign = useCallback(
+    (kinkId: string, listId: string | null) => dispatch({ type: "ASSIGN_KINK", kinkId, listId }),
+    [dispatch],
+  );
+  const handleEdit = useCallback(
+    (kink: Kink) => {
+      const name = window.prompt("Kink name", kink.name);
+      if (!name) return;
+      const description = window.prompt("Description", kink.description ?? "") ?? undefined;
+      dispatch({ type: "UPDATE_KINK", id: kink.id, patch: { name, description } });
+    },
+    [dispatch],
+  );
+  const handleDelete = useCallback(
+    (kinkId: string) => dispatch({ type: "DELETE_CUSTOM_KINK", id: kinkId }),
+    [dispatch],
   );
 
   function goToKink(kink: Kink) {
@@ -91,17 +111,12 @@ export function AllKinksList({ editMode }: { editMode: boolean }) {
                       kink={kink}
                       lists={state.lists}
                       currentListId={state.assignments[kink.id] ?? null}
-                      onAssign={(listId) => dispatch({ type: "ASSIGN_KINK", kinkId: kink.id, listId })}
+                      onAssign={handleAssign}
                       editMode={editMode}
                       reorderable={false}
                       highlighted={highlightId === kink.id}
-                      onEdit={() => {
-                        const name = window.prompt("Kink name", kink.name);
-                        if (!name) return;
-                        const description = window.prompt("Description", kink.description ?? "") ?? undefined;
-                        dispatch({ type: "UPDATE_KINK", id: kink.id, patch: { name, description } });
-                      }}
-                      onDelete={() => dispatch({ type: "DELETE_CUSTOM_KINK", id: kink.id })}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
                     />
                   ))}
                 </div>

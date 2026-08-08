@@ -50,12 +50,12 @@ export function CategoryManager() {
             <Button
               size="small"
               icon={<ArrowUpOutlined />}
-              onClick={() => dispatch({ type: "REORDER_CATEGORY", id: category.id, direction: "up", categories })}
+              onClick={() => dispatch({ type: "REORDER_CATEGORY", id: category.id, direction: "up" })}
             />
             <Button
               size="small"
               icon={<ArrowDownOutlined />}
-              onClick={() => dispatch({ type: "REORDER_CATEGORY", id: category.id, direction: "down", categories })}
+              onClick={() => dispatch({ type: "REORDER_CATEGORY", id: category.id, direction: "down" })}
             />
             {category.source === "custom" && (
               <Button

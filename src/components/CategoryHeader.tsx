@@ -1,23 +1,23 @@
+import { memo } from "react";
 import { Button, Space } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
-import { useAppStore } from "../store/AppStore";
-import { useCategories } from "../hooks/useKinks";
 import type { Category } from "../types";
 
-export function CategoryHeader({
+export const CategoryHeader = memo(function CategoryHeader({
   category,
   count,
   editMode,
   reorderable = true,
+  onReorderUp,
+  onReorderDown,
 }: {
   category: Category;
   count: number;
   editMode: boolean;
   reorderable?: boolean;
+  onReorderUp?: (categoryId: string) => void;
+  onReorderDown?: (categoryId: string) => void;
 }) {
-  const { dispatch } = useAppStore();
-  const categories = useCategories();
-
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
       <span>
@@ -25,18 +25,10 @@ export function CategoryHeader({
       </span>
       {editMode && reorderable && (
         <Space onClick={(e) => e.stopPropagation()}>
-          <Button
-            size="small"
-            icon={<ArrowUpOutlined />}
-            onClick={() => dispatch({ type: "REORDER_CATEGORY", id: category.id, direction: "up", categories })}
-          />
-          <Button
-            size="small"
-            icon={<ArrowDownOutlined />}
-            onClick={() => dispatch({ type: "REORDER_CATEGORY", id: category.id, direction: "down", categories })}
-          />
+          <Button size="small" icon={<ArrowUpOutlined />} onClick={() => onReorderUp?.(category.id)} />
+          <Button size="small" icon={<ArrowDownOutlined />} onClick={() => onReorderDown?.(category.id)} />
         </Space>
       )}
     </div>
   );
-}
+});

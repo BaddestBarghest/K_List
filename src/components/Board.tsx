@@ -1,8 +1,10 @@
+import { useCallback } from "react";
 import { Collapse, Empty, Typography } from "antd";
 import { useAppStore } from "../store/AppStore";
 import { useAllKinks, useCategories } from "../hooks/useKinks";
 import { KinkItem } from "./KinkItem";
 import { CategoryHeader } from "./CategoryHeader";
+import type { Kink } from "../types";
 
 const { Title } = Typography;
 
@@ -11,6 +13,40 @@ export function Board({ editMode }: { editMode: boolean }) {
   const categories = useCategories();
   const allKinks = useAllKinks();
   const lists = [...state.lists].sort((a, b) => a.order - b.order);
+
+  const handleEdit = useCallback(
+    (kink: Kink) => {
+      const name = window.prompt("Kink name", kink.name);
+      if (!name) return;
+      const description = window.prompt("Description", kink.description ?? "") ?? undefined;
+      dispatch({ type: "UPDATE_KINK", id: kink.id, patch: { name, description } });
+    },
+    [dispatch],
+  );
+  const handleDelete = useCallback(
+    (kinkId: string) => dispatch({ type: "DELETE_CUSTOM_KINK", id: kinkId }),
+    [dispatch],
+  );
+  const handleUnassign = useCallback(
+    (kinkId: string) => dispatch({ type: "ASSIGN_KINK", kinkId, listId: null }),
+    [dispatch],
+  );
+  const handleReorderUp = useCallback(
+    (kinkId: string, listId: string) => dispatch({ type: "REORDER_KINK", id: kinkId, direction: "up", listId }),
+    [dispatch],
+  );
+  const handleReorderDown = useCallback(
+    (kinkId: string, listId: string) => dispatch({ type: "REORDER_KINK", id: kinkId, direction: "down", listId }),
+    [dispatch],
+  );
+  const handleCategoryUp = useCallback(
+    (id: string) => dispatch({ type: "REORDER_CATEGORY", id, direction: "up" }),
+    [dispatch],
+  );
+  const handleCategoryDown = useCallback(
+    (id: string) => dispatch({ type: "REORDER_CATEGORY", id, direction: "down" }),
+    [dispatch],
+  );
 
   return (
     <div style={{ display: "flex", gap: 16, overflowX: "auto", paddingBottom: 8 }}>
@@ -62,7 +98,15 @@ export function Board({ editMode }: { editMode: boolean }) {
                       const kinks = (byCategory.get(category.id) ?? []).slice().sort((a, b) => a.order - b.order);
                       return {
                         key: category.id,
-                        label: <CategoryHeader category={category} count={kinks.length} editMode={editMode} />,
+                        label: (
+                          <CategoryHeader
+                            category={category}
+                            count={kinks.length}
+                            editMode={editMode}
+                            onReorderUp={handleCategoryUp}
+                            onReorderDown={handleCategoryDown}
+                          />
+                        ),
                         children: (
                           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                             {kinks.map((kink) => (
@@ -73,28 +117,11 @@ export function Board({ editMode }: { editMode: boolean }) {
                                 currentListId={list.id}
                                 readOnly
                                 editMode={editMode}
-                                onEdit={() => {
-                                  const name = window.prompt("Kink name", kink.name);
-                                  if (!name) return;
-                                  const description =
-                                    window.prompt("Description", kink.description ?? "") ?? undefined;
-                                  dispatch({ type: "UPDATE_KINK", id: kink.id, patch: { name, description } });
-                                }}
-                                onDelete={() => dispatch({ type: "DELETE_CUSTOM_KINK", id: kink.id })}
-                                onUnassign={() =>
-                                  dispatch({ type: "ASSIGN_KINK", kinkId: kink.id, listId: null })
-                                }
-                                onReorderUp={() =>
-                                  dispatch({ type: "REORDER_KINK", id: kink.id, direction: "up", categoryKinks: kinks })
-                                }
-                                onReorderDown={() =>
-                                  dispatch({
-                                    type: "REORDER_KINK",
-                                    id: kink.id,
-                                    direction: "down",
-                                    categoryKinks: kinks,
-                                  })
-                                }
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                                onUnassign={handleUnassign}
+                                onReorderUp={handleReorderUp}
+                                onReorderDown={handleReorderDown}
                               />
                             ))}
                           </div>
