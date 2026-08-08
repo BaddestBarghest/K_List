@@ -5,6 +5,7 @@ import { AgeGate } from "./components/AgeGate";
 import { UnassignedList } from "./components/UnassignedList";
 import { Board } from "./components/Board";
 import { ListManager } from "./components/ListManager";
+import { CategoryManager } from "./components/CategoryManager";
 import { AddKinkForm } from "./components/AddKinkForm";
 import { ExportImport } from "./components/ExportImport";
 
@@ -55,13 +56,14 @@ function AppShell() {
         {editMode && (
           <>
             <ListManager />
+            <CategoryManager />
             <AddKinkForm />
           </>
         )}
         <UnassignedList editMode={editMode} />
         <Title level={4}>Lists</Title>
         <div ref={boardRef}>
-          <Board />
+          <Board editMode={editMode} />
         </div>
       </Content>
     </Layout>

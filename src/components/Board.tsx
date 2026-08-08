@@ -2,11 +2,12 @@ import { Collapse, Empty, Typography } from "antd";
 import { useAppStore } from "../store/AppStore";
 import { useAllKinks, useCategories } from "../hooks/useKinks";
 import { KinkItem } from "./KinkItem";
+import { CategoryHeader } from "./CategoryHeader";
 
 const { Title } = Typography;
 
-export function Board() {
-  const { state } = useAppStore();
+export function Board({ editMode }: { editMode: boolean }) {
+  const { state, dispatch } = useAppStore();
   const categories = useCategories();
   const allKinks = useAllKinks();
   const lists = [...state.lists].sort((a, b) => a.order - b.order);
@@ -57,25 +58,46 @@ export function Board() {
                   defaultActiveKey={categories.map((c) => c.id)}
                   items={categories
                     .filter((c) => byCategory.has(c.id))
-                    .map((category) => ({
-                      key: category.id,
-                      label: category.name,
-                      children: (
-                        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                          {(byCategory.get(category.id) ?? [])
-                            .sort((a, b) => a.order - b.order)
-                            .map((kink) => (
+                    .map((category) => {
+                      const kinks = (byCategory.get(category.id) ?? []).slice().sort((a, b) => a.order - b.order);
+                      return {
+                        key: category.id,
+                        label: <CategoryHeader category={category} count={kinks.length} editMode={editMode} />,
+                        children: (
+                          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                            {kinks.map((kink) => (
                               <KinkItem
                                 key={kink.id}
                                 kink={kink}
                                 lists={state.lists}
                                 currentListId={list.id}
                                 readOnly
+                                editMode={editMode}
+                                onEdit={() => {
+                                  const name = window.prompt("Kink name", kink.name);
+                                  if (!name) return;
+                                  const description =
+                                    window.prompt("Description", kink.description ?? "") ?? undefined;
+                                  dispatch({ type: "UPDATE_KINK", id: kink.id, patch: { name, description } });
+                                }}
+                                onDelete={() => dispatch({ type: "DELETE_CUSTOM_KINK", id: kink.id })}
+                                onReorderUp={() =>
+                                  dispatch({ type: "REORDER_KINK", id: kink.id, direction: "up", categoryKinks: kinks })
+                                }
+                                onReorderDown={() =>
+                                  dispatch({
+                                    type: "REORDER_KINK",
+                                    id: kink.id,
+                                    direction: "down",
+                                    categoryKinks: kinks,
+                                  })
+                                }
                               />
                             ))}
-                        </div>
-                      ),
-                    }))}
+                          </div>
+                        ),
+                      };
+                    })}
                 />
               )}
             </div>

@@ -4,6 +4,7 @@ import { useAppStore } from "../store/AppStore";
 import { useCategories, useUnassignedKinksByCategory } from "../hooks/useKinks";
 import { fuzzySearch } from "../utils/search";
 import { KinkItem } from "./KinkItem";
+import { CategoryHeader } from "./CategoryHeader";
 import type { Kink } from "../types";
 
 const { Title } = Typography;
@@ -54,7 +55,7 @@ export function UnassignedList({ editMode }: { editMode: boolean }) {
             const kinks = (kinksByCategory.get(category.id) ?? []).slice().sort((a, b) => a.order - b.order);
             return {
               key: category.id,
-              label: `${category.name} (${kinks.length})`,
+              label: <CategoryHeader category={category} count={kinks.length} editMode={editMode} />,
               children: (
                 <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {kinks.map((kink) => (

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { builtinKinks, builtinCategories } from "../data";
 import { useAppStore } from "../store/AppStore";
-import type { Kink } from "../types";
+import type { Category, Kink } from "../types";
 
 export function useAllKinks(): Kink[] {
   const { state } = useAppStore();
@@ -39,6 +39,13 @@ export function useUnassignedKinksByCategory(): Map<string, Kink[]> {
   );
 }
 
-export function useCategories() {
-  return builtinCategories;
+export function useCategories(): Category[] {
+  const { state } = useAppStore();
+  return useMemo(() => {
+    const merged = [...builtinCategories, ...state.customCategories].map((c) => ({
+      ...c,
+      order: state.categoryOrderOverrides[c.id] ?? c.order,
+    }));
+    return merged.sort((a, b) => a.order - b.order);
+  }, [state.customCategories, state.categoryOrderOverrides]);
 }

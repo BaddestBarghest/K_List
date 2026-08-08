@@ -1,15 +1,15 @@
 [
-  { "id": "bondage", "name": "Bondage & Restraint" },
-  { "id": "power-exchange", "name": "Power Exchange & D/s" },
-  { "id": "impact", "name": "Impact Play" },
-  { "id": "sensation", "name": "Sensation Play" },
-  { "id": "sensory-deprivation", "name": "Sensory Deprivation" },
-  { "id": "roleplay", "name": "Roleplay & Fantasy" },
-  { "id": "exhibitionism", "name": "Exhibitionism & Voyeurism" },
-  { "id": "verbal-psych", "name": "Verbal & Psychological" },
-  { "id": "objects-fetish", "name": "Objects & Material Fetish" },
-  { "id": "body-worship", "name": "Body Worship & Body Play" },
-  { "id": "aftercare", "name": "Aftercare & Emotional" },
-  { "id": "multiples", "name": "Multiple Partners" },
-  { "id": "custom", "name": "Custom" }
+  { "id": "bondage", "name": "Bondage & Restraint", "source": "builtin", "order": 0 },
+  { "id": "power-exchange", "name": "Power Exchange & D/s", "source": "builtin", "order": 1 },
+  { "id": "impact", "name": "Impact Play", "source": "builtin", "order": 2 },
+  { "id": "sensation", "name": "Sensation Play", "source": "builtin", "order": 3 },
+  { "id": "sensory-deprivation", "name": "Sensory Deprivation", "source": "builtin", "order": 4 },
+  { "id": "roleplay", "name": "Roleplay & Fantasy", "source": "builtin", "order": 5 },
+  { "id": "exhibitionism", "name": "Exhibitionism & Voyeurism", "source": "builtin", "order": 6 },
+  { "id": "verbal-psych", "name": "Verbal & Psychological", "source": "builtin", "order": 7 },
+  { "id": "objects-fetish", "name": "Objects & Material Fetish", "source": "builtin", "order": 8 },
+  { "id": "body-worship", "name": "Body Worship & Body Play", "source": "builtin", "order": 9 },
+  { "id": "aftercare", "name": "Aftercare & Emotional", "source": "builtin", "order": 10 },
+  { "id": "multiples", "name": "Multiple Partners", "source": "builtin", "order": 11 },
+  { "id": "custom", "name": "Custom", "source": "builtin", "order": 12 }
 ]

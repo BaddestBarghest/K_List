@@ -85,7 +85,7 @@ export const KinkItem = forwardRef<HTMLDivElement, KinkItemProps>(function KinkI
               { value: "none", label: "None" },
               ...lists
                 .slice()
-                .sort((a, b) => a.order - b.order)
+                .sort((a, b) => a.name.localeCompare(b.name))
                 .map((l) => ({ value: l.id, label: l.name })),
             ]}
           />

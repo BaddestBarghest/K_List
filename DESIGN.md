@@ -1,14 +1,14 @@
 # K_List — Design Document
 
 ## Overview
-A public, static kink-sorting app. Every kink belongs to a category and can be assigned by the user to one of several personal lists (Favourite, Like, Okay, Dislike, plus any custom lists). Sorting happens in a **Master List** view; a **Board** view shows the results as horizontally-stacked columns, one per list. Everything is client-side — no accounts, no backend — built with React + Ant Design, hosted on GitHub Pages.
+A public, static kink-sorting app, all on one page. Every kink belongs to a category and can be assigned by the user to one of several personal lists (Favourite, Like, Okay, Dislike, plus any custom lists). An **Unassigned** section (search + category dropdowns) sits above the **Board** — one horizontally-stacked, vertically-scrollable column per list, showing only what's been assigned to it, grouped by category. There is no separate "master list" view; unassigned kinks simply aren't shown on the Board. Everything is client-side — no accounts, no backend — built with React + Ant Design, hosted on GitHub Pages.
 
 ## Goals
 - Public, browsable, categorized list of kinks — no login required.
-- Fast client-side search/filter over the master list.
-- Per-kink assignment to a user list (Favourite/Like/Okay/Dislike/custom) via a scrollable dropdown; "None" = unassigned.
-- Board view: one vertical, scrollable column per list, stacked horizontally, each showing only the kinks assigned to it, grouped by category (collapsible dropdowns), same hover-description behavior as the master list.
-- Edit mode (toggle): add/remove/reorder lists, recolor lists, add/edit custom kinks (single "Custom" category), manually reorder kinks within a category via arrows. All edit-only controls hidden when edit mode is off.
+- Fast client-side fuzzy search over the Unassigned section.
+- Per-kink assignment to a user list (Favourite/Like/Okay/Dislike/custom) via a scrollable dropdown in the Unassigned section; "None" = unassigned (kink has no list, so it doesn't appear on the Board).
+- Board: one vertical, scrollable column per list, stacked horizontally, each showing only the kinks assigned to it, grouped by category (collapsible dropdowns), same hover-description behavior as the Unassigned section.
+- Edit mode (toggle): add/remove/reorder/recolor lists; create/rename/delete/reorder categories; add custom kinks to any category (builtin or custom); manually reorder kinks via arrows — both in the Unassigned section and within each Board column. All edit-only controls hidden when edit mode is off.
 - Export the board as an image; export the save data as an encrypted `.json`. Import that file back in.
 - Dark mode, with a user-adjustable accent color.
 - Ant Design component library throughout.
@@ -28,39 +28,49 @@ A public, static kink-sorting app. Every kink belongs to a category and can be a
 - **Image export:** `html-to-image` (or `dom-to-image`) to rasterize the Board view to PNG.
 - **Encryption:** Web Crypto API (AES-GCM) with a fixed key embedded in the app — encrypt on export / decrypt on import fully automatically, no passphrase prompt. This is obfuscation, not real security (the key ships in the JS bundle, so it only prevents casual editing/viewing of the save file in a text editor) — documented as a known limitation, not a security guarantee.
 
-## Views
+## Layout
 
-### 1. Master List (browse + sort)
-- Search bar filters across name / category / description.
-- Categories rendered as collapsible dropdowns (Ant `Collapse`); kinks listed underneath.
+One page, top to bottom:
+
+### 1. Unassigned section
+- Search bar (fuzzy) filters across name / category / description.
+- Categories rendered as collapsible dropdowns (Ant `Collapse`); only kinks with no list assignment are listed underneath.
 - Hovering a kink shows its description (Ant `Tooltip`).
-- Each kink has an assignment control: a scrollable dropdown (Ant `Select`) listing all current lists by name; selecting one assigns the kink to it; "None" clears the assignment.
-- This is the only place assignment happens.
+- Each kink has an assignment control: a scrollable dropdown (Ant `Select`) listing all current lists by name; selecting one assigns the kink to it (removing it from this section); "None" clears the assignment (returning it here). This dropdown's options are always alphabetical, independent of the lists' display order on the Board (see Edit mode below) — reordering is a display concern, not a selection concern.
 
-### 2. Board (sorted result)
+### 2. Board
 - One column per list (Favourite, Like, Okay, Dislike, + any custom lists), stacked horizontally in list order, each independently vertically scrollable.
-- Within each column, only kinks currently assigned to that list are shown, grouped by category as collapsible dropdowns — same hover-description behavior as the Master List.
-- Unassigned kinks appear in neither column; they're only visible/assignable from the Master List.
-- Small screens: columns become horizontally scrollable rather than wrapping/stacking vertically (TBD in implementation, see Open Questions).
+- Within each column, only kinks currently assigned to that list are shown, grouped by category as collapsible dropdowns — same hover-description behavior as the Unassigned section.
 
 ### 3. Edit mode (toggle, e.g. Ant `Switch` in the header)
 When on, additionally shows:
 - **Manage lists:** add a new list (name + color via Ant `ColorPicker`), remove a list, reorder lists (arrows) — the horizontal order of Board columns.
-- **Custom kinks:** add/edit kinks under a single fixed "Custom" category (name + description).
-- **Reorder kinks:** up/down arrow controls to manually reorder kinks within a category (in the Master List, which then reflects into the Board's per-category ordering).
-- **Recolor lists:** change a list's accent color, used for its column header in the Board.
+- **Manage categories:** add a new category; rename/delete custom categories (delete blocked while any kink still uses it); reorder any category (builtin or custom) via arrows — a category's order is global, so reordering it in one place (Unassigned or any Board column) reorders it everywhere for consistency.
+- **Custom kinks:** add a kink to any category, builtin or custom, via a form with an alphabetically-sorted category picker (name + description); edit/remove custom kinks inline.
+- **Reorder kinks:** up/down arrow controls appear on every kink row, in both the Unassigned section and each Board column, to manually reorder kinks within their category. A kink's order is likewise global but only visibly matters within whichever subset (unassigned, or a given list's category) is currently displaying it, so reordering within one list's column doesn't disturb other lists or the Unassigned section.
+- **Remove custom kinks:** an X button on custom kinks (builtin kinks can only be unassigned, not removed).
 When off, all of the above controls are hidden; the app is browse/search/assign only.
 
 ## Data Model (draft)
 
 ```ts
+interface Category {
+  id: string;
+  name: string;
+  source: "builtin" | "custom";
+  order: number;   // global display order; user-reorderable regardless of source
+}
+// Builtin categories: fixed set shipped in data/categories.json (includes a "custom" bucket
+// as one option among many, not a mandatory destination). Custom categories are user-created
+// in edit mode, renamable/deletable (delete blocked while any kink still references it).
+
 interface Kink {
   id: string;              // stable id (slug or uuid)
   name: string;
-  category: string;        // category id/name; "custom" for user-added kinks
+  category: string;        // any category id, builtin or custom
   description?: string;
   source: "builtin" | "custom";
-  order: number;            // manual order within its category
+  order: number;            // manual order within its category (global, see Edit mode)
 }
 
 interface ListDef {
