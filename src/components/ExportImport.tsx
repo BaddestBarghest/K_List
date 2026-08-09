@@ -38,9 +38,26 @@ export function ExportImport({ boardRef }: { boardRef: React.RefObject<HTMLDivEl
     }
 
     unclip(root, "overflowX");
-    root.querySelectorAll<HTMLElement>(".board-scroll-root").forEach((el) => unclip(el, "overflowX"));
+    root.querySelectorAll<HTMLElement>(".board-scroll-root").forEach((el) => {
+      unclip(el, "overflowX");
+      // The bottom padding exists only to clear the horizontal scrollbar, which
+      // is gone once overflow is unclipped for export; drop it so padding is even.
+      const prevPaddingBottom = el.style.paddingBottom;
+      el.style.paddingBottom = "0";
+      restore.push(() => {
+        el.style.paddingBottom = prevPaddingBottom;
+      });
+    });
     root.querySelectorAll<HTMLElement>(".board-column").forEach((el) => unclip(el, "overflow", true));
     root.querySelectorAll<HTMLElement>(".board-column-content").forEach((el) => unclip(el, "overflowY"));
+
+    // Frame the exported image with even padding on all sides.
+    const exportPadding = 16;
+    const prevPadding = root.style.padding;
+    root.style.padding = `${exportPadding}px`;
+    restore.push(() => {
+      root.style.padding = prevPadding;
+    });
 
     try {
       // Let layout settle after the style changes before measuring/capturing.
