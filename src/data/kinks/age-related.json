@@ -1,0 +1,7 @@
+[
+  {"id":"age-differences","name":"Age Differences","category":"age-related","description":"Adult characters with significant gaps in the ages between them (does not imply underage).","source":"builtin","order":0},
+  {"id":"ageplay","name":"Ageplay","category":"age-related","description":"Refers to scenes that involve one or more significantly underage characters, and putting a significant focus on that age aspect and it's involvement in the roleplay (such as highlighting youthfulness, immaturity, or the taboo nature of one's age). May include sexual interactions, but not necessarily.","source":"builtin","order":1},
+  {"id":"age-progression","name":"Age Progression","category":"age-related","description":"Scenes in which a character’s age progresses, often focusing on their physical development but may incorporate mental aspects.","source":"builtin","order":2},
+  {"id":"age-regression","name":"Age Regression","category":"age-related","description":"Scenes in which a character becomes younger, physically and sometimes mentally.","source":"builtin","order":3},
+  {"id":"underage-characters","name":"Underage Characters","category":"age-related","description":"A situation in which at least one character involved will be under the age of 18.","source":"builtin","order":4}
+]

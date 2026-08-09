@@ -1,0 +1,12 @@
+[
+  {"id":"cuntboys","name":"Cuntboys","category":"gender-preferences","description":"Expresses an interest in male characters who have a vagina instead of typically male genitals.","source":"builtin","order":0},
+  {"id":"females","name":"Females","category":"gender-preferences","description":"Expresses an interest in traditionally female characters.","source":"builtin","order":1},
+  {"id":"hermaphrodites","name":"Hermaphrodites","category":"gender-preferences","description":"Expresses an interest in female-identifying characters that have breasts, a penis, and a vagina.","source":"builtin","order":2},
+  {"id":"male-herms","name":"Male-Herms","category":"gender-preferences","description":"Expresses an interest in male-identifying characters that have a penis and a vagina.","source":"builtin","order":3},
+  {"id":"males","name":"Males","category":"gender-preferences","description":"Expresses an interest in traditionally male characters.","source":"builtin","order":4},
+  {"id":"nonbinary","name":"Nonbinary","category":"gender-preferences","description":"Characters that do not strictly identify or abide by a gender binary (regardless of originally assigned gender or biological sex).","source":"builtin","order":5},
+  {"id":"shemales","name":"Shemales","category":"gender-preferences","description":"Expresses an interest in female-identifying characters that have a penis (and typically breasts), but not a vagina.","source":"builtin","order":6},
+  {"id":"trans-females","name":"Trans Females","category":"gender-preferences","description":"Expresses an interest in transgender characters that identify as female regardless of originally assigned gender or biological sex.","source":"builtin","order":7},
+  {"id":"transgender","name":"Transgender","category":"gender-preferences","description":"Expresses an interest in characters whose assigned sex and identified gender are not the same, who identifies as a non-binary gender, or who has transitioned (or is in the process of transitioning) from one previously assigned gender to another.","source":"builtin","order":8},
+  {"id":"trans-males","name":"Trans Males","category":"gender-preferences","description":"Expresses an interest in transgender characters that identify as male regardless of originally assigned gender or biological sex.","source":"builtin","order":9}
+]
