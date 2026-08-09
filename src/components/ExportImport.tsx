@@ -38,6 +38,7 @@ export function ExportImport({ boardRef }: { boardRef: React.RefObject<HTMLDivEl
     }
 
     unclip(root, "overflowX");
+    root.querySelectorAll<HTMLElement>(".board-scroll-root").forEach((el) => unclip(el, "overflowX"));
     root.querySelectorAll<HTMLElement>(".board-column").forEach((el) => unclip(el, "overflow", true));
     root.querySelectorAll<HTMLElement>(".board-column-content").forEach((el) => unclip(el, "overflowY"));
 
