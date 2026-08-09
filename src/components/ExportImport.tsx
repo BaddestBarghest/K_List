@@ -26,37 +26,52 @@ export function ExportImport({ boardRef }: { boardRef: React.RefObject<HTMLDivEl
     if (!root) return;
     
     const restore: Array<() => void> = [];
-    function unclip(el: HTMLElement, prop: "overflow" | "overflowX" | "overflowY", maxHeight?: boolean) {
-      const prevOverflow = el.style[prop];
-      const prevMaxHeight = maxHeight ? el.style.maxHeight : undefined;
-      el.style[prop] = "visible";
-      if (maxHeight) el.style.maxHeight = "none";
+    function setStyle(el: HTMLElement, prop: "overflow" | "overflowX" | "overflowY" | "maxHeight" | "width" | "height" | "padding" | "paddingBottom", value: string) {
+      const prev = el.style[prop];
+      el.style[prop] = value;
       restore.push(() => {
-        el.style[prop] = prevOverflow;
-        if (maxHeight) el.style.maxHeight = prevMaxHeight ?? "";
+        el.style[prop] = prev;
       });
     }
 
     const exportPadding = 16;
-    unclip(root, "overflowX");
-    root.querySelectorAll<HTMLElement>(".board-scroll-root").forEach((el) => {
-      unclip(el, "overflowX");
-      const prevPadding = el.style.padding;
-      el.style.padding = `${exportPadding}px`;
-      restore.push(() => {
-        el.style.padding = prevPadding;
-      });
+
+    const scrollRoots = Array.from(root.querySelectorAll<HTMLElement>(".board-scroll-root"));
+    const columnContents = Array.from(root.querySelectorAll<HTMLElement>(".board-column-content"));
+    const scrollRootWidth = scrollRoots.reduce((max, el) => Math.max(max, el.scrollWidth), 0);
+    const columnContentHeights = columnContents.map((el) => el.scrollHeight);
+
+    scrollRoots.forEach((el) => {
+      setStyle(el, "overflowX", "visible");
+      setStyle(el, "paddingBottom", "0");
+      // box-sizing is border-box here, so padding eats into the width we set
+      // rather than adding to it -- pad the width out first so the content
+      // area still ends up exactly scrollRootWidth after padding is applied.
+      setStyle(el, "width", `${scrollRootWidth + exportPadding * 2}px`);
+      setStyle(el, "padding", `${exportPadding}px`);
     });
-    root.querySelectorAll<HTMLElement>(".board-column").forEach((el) => unclip(el, "overflow", true));
-    root.querySelectorAll<HTMLElement>(".board-column-content").forEach((el) => unclip(el, "overflowY"));
+    root.querySelectorAll<HTMLElement>(".board-column").forEach((el) => {
+      setStyle(el, "overflow", "visible");
+      setStyle(el, "maxHeight", "none");
+    });
+    columnContents.forEach((el, i) => {
+      setStyle(el, "overflowY", "visible");
+      setStyle(el, "height", `${columnContentHeights[i]}px`);
+    });
+
+    // .board-scroll-root is the actual sized content box (it's an explicit
+    // width now, so its own dimensions are trustworthy); `root` is just an
+    // unstyled wrapper that stays parent-width regardless of how wide its
+    // child renders, so capturing it directly would still crop the right edge.
+    const exportTarget = scrollRoots[0] ?? root;
 
     try {
       // Let layout settle after the style changes before measuring/capturing.
       await new Promise((resolve) => requestAnimationFrame(resolve));
-      const dataUrl = await toPng(root, {
+      const dataUrl = await toPng(exportTarget, {
         backgroundColor: state.theme.darkMode ? "#141414" : "#ffffff",
-        width: root.scrollWidth,
-        height: root.scrollHeight,
+        width: exportTarget.offsetWidth,
+        height: exportTarget.offsetHeight,
       });
       const a = document.createElement("a");
       a.href = dataUrl;
